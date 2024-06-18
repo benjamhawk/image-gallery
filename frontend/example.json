@@ -1,0 +1,67 @@
+[
+  {
+    "uuid": "3dcfece0-991a-442f-91d4-f99d7c70a9f8",
+    "internalId": "gnvb9UtUM-NWE",
+    "name": "profile.png",
+    "size": 945257,
+    "isImage": true,
+    "mimeType": "image/png",
+    "file": {},
+    "externalUrl": null,
+    "cdnUrlModifiers": "",
+    "cdnUrl": "https://ucarecdn.com/3dcfece0-991a-442f-91d4-f99d7c70a9f8/",
+    "fullPath": null,
+    "uploadProgress": 100,
+    "fileInfo": {
+      "uuid": "3dcfece0-991a-442f-91d4-f99d7c70a9f8",
+      "name": "profile.png",
+      "size": 945257,
+      "isStored": true,
+      "isImage": true,
+      "mimeType": "image/png",
+      "cdnUrl": "https://ucarecdn.com/3dcfece0-991a-442f-91d4-f99d7c70a9f8/",
+      "s3Url": null,
+      "originalFilename": "profile.png",
+      "imageInfo": {
+        "dpi": null,
+        "width": 600,
+        "format": "PNG",
+        "height": 900,
+        "sequence": false,
+        "colorMode": "RGBA",
+        "orientation": null,
+        "geoLocation": null,
+        "datetimeOriginal": null
+      },
+      "videoInfo": null,
+      "contentInfo": {
+        "mime": {
+          "mime": "image/png",
+          "type": "image",
+          "subtype": "png"
+        },
+        "image": {
+          "dpi": null,
+          "width": 600,
+          "format": "PNG",
+          "height": 900,
+          "sequence": false,
+          "colorMode": "RGBA",
+          "orientation": null,
+          "geoLocation": null,
+          "datetimeOriginal": null
+        }
+      },
+      "metadata": {},
+      "s3Bucket": null,
+      "defaultEffects": null
+    },
+    "metadata": {},
+    "isSuccess": true,
+    "isUploading": false,
+    "isFailed": false,
+    "isRemoved": false,
+    "errors": [],
+    "status": "success"
+  }
+]
