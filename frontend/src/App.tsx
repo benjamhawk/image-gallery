@@ -1,44 +1,26 @@
-import React, { useState } from "react";
-import { FileUploaderRegular } from "@uploadcare/react-uploader";
-import "@uploadcare/react-uploader/core.css";
+import { useState } from "react";
+import { LoginPage } from "./pages/LoginPage";
+import { PhotoPage } from "./pages/PhotoPage";
+import { GlobalProvider, Page } from "./hooks/useGlobalContext";
 
 export default function App() {
-  const [files, setFiles] = useState<Array<File>>([]);
-
-  console.log(files);
-
-  const handleChangeEvent = (items: any) => {
-    setFiles([
-      ...items.allEntries.filter((file: File) => file.status === "success"),
-    ]);
-  };
+  const [page, setPage] = useState<Page>(Page.Login);
+  const [user, setUser] = useState<string | undefined>();
 
   return (
-    <div>
-      <FileUploaderRegular
-        onChange={handleChangeEvent}
-        pubkey="d8b139264282b18b0844"
-        onFileAdded={() => {
-          console.log("File added");
-        }}
-      />
+    <GlobalProvider value={{ page, setPage, user, setUser }}>
+      <main>
+        <header>
+          <h1>{page === Page.Photo ? "Photo Gallery" : "Login"}</h1>
+        </header>
 
-      <div>
-        {files.map((file) => (
-          <div key={file.uuid}>
-            <img src={file.cdnUrl} alt={file.fileInfo.originalFilename} />
-          </div>
-        ))}
-      </div>
-    </div>
+        {/* For simplicity routed this based on a useState hook. 
+        In an real production applicitation, I would reach for react-router or a framework (ie. Next or Remix). */}
+
+        {/* TODO: Sync URL path with the selected page */}
+        {page === Page.Login && <LoginPage />}
+        {page === Page.Photo && <PhotoPage />}
+      </main>
+    </GlobalProvider>
   );
 }
-
-type File = {
-  uuid: string;
-  cdnUrl: string;
-  fileInfo: {
-    originalFilename: string;
-  };
-  status: string;
-};
