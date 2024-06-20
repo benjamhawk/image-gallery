@@ -1,54 +1,87 @@
 import { Router } from "express";
-import { prisma } from "./utils/db-client";
+import { PrismaClient } from "@prisma/client";
+
 import {
+  asyncHandler,
   validateEmail,
   validatePhotoGetRequest,
   validatePhotoPostRequest,
 } from "./utils/middleware";
 
 export const router = Router();
+export const prisma = new PrismaClient();
 
-router.post("/user", validateEmail, async (req, res) => {
-  const email = req.body.email;
+/**
+ * Route to retrieve a user by email.
+ * Creates a new user if one does not already exist with the provided email.
+ */
+router.post(
+  "/user",
+  validateEmail,
+  asyncHandler(async (req, res) => {
+    const email = req.body.email;
 
-  await prisma.user.upsert({
-    where: { email },
-    update: {},
-    create: { email },
-  });
+    // TODO: Separate the signup and login logic and add authentication.
+    // User's auth token should be stored in JWT and added to a HTTP-only cookie.
 
-  return res.status(201).send("User created");
-});
+    const user = await prisma.user.upsert({
+      where: { email },
+      update: {},
+      create: { email },
+    });
 
-router.post("/photo", validatePhotoPostRequest, async (req, res) => {
-  const { url, userID, description } = req.body;
+    return res.status(201).send({ user_id: user.id?.toString() });
+  })
+);
 
-  await prisma.photo.create({
-    data: {
-      url,
-      description,
-      user: { connect: { email: userID } },
-    },
-  });
+/**
+ * Route to create a new photo.
+ */
+router.post(
+  "/photo",
+  validatePhotoPostRequest,
+  asyncHandler(async (req, res) => {
+    const { url, user_id, description } = req.body;
 
-  return res.status(201).send("Photo created");
-});
+    const photo = await prisma.photo.create({
+      data: {
+        url,
+        description,
+        userId: Number(user_id),
+      },
+    });
 
-router.get("/photo", validatePhotoGetRequest, async (req, res) => {
-  const photos = await prisma.photo.findMany({
-    where: {
-      userId: Number(req.query.userID),
-    },
-  });
-
-  const response = {
-    count: photos.length,
-    photos: photos.map((photo) => ({
-      id: photo.id,
-      url: photo.url,
+    return res.status(201).send({
+      id: photo.id?.toString(),
       description: photo.description,
-    })),
-  };
+      user_id: photo.userId?.toString(),
+      url: photo.url,
+    });
+  })
+);
 
-  return res.json(response);
-});
+/**
+ * Route to retrieve photos by user ID.
+ */
+router.get(
+  "/photo",
+  validatePhotoGetRequest,
+  asyncHandler(async (req, res) => {
+    const photos = await prisma.photo.findMany({
+      where: {
+        userId: Number(req.query.user_id),
+      },
+    });
+
+    const response = {
+      count: photos.length,
+      photos: photos.map((photo) => ({
+        id: photo.id.toString(),
+        url: photo.url,
+        description: photo.description,
+      })),
+    };
+
+    return res.json(response);
+  })
+);
