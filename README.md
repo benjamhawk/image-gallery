@@ -2,6 +2,7 @@
 
 Welcome to the Image Gallery Application repo.
 This project consists of both a backend and a frontend application to manage and display an image gallery.
+[See the live demo here](https://diamond-image-gallery.netlify.app/)
 
 ## Table of Contents
 
